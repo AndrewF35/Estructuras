@@ -14,10 +14,10 @@ public class  DoublyLinkedList<T> {
         this.size = 0;
     }
 
-    public static void checkIndexOpen(int index, int size){
+    public static void indexOpenCheck(int index, int size){
         if (index < 0 || index > size) throw new IndexOutOfBoundsException("Index not valid");
     }
-    public static void checkIndexClose(int index, int size){
+    public static void indexClosedCheck(int index, int size){
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException("Index not valid");
     }
 
@@ -25,7 +25,7 @@ public class  DoublyLinkedList<T> {
         this.add(this.size, j);
     }
     public void add (int index, T j){
-        checkIndexOpen(index, this.size);
+        indexOpenCheck(index, this.size);
         DoubleNode<T> nNode = new DoubleNode(j);
         if (index == 0) {
             if(this.head != null) {
@@ -43,14 +43,14 @@ public class  DoublyLinkedList<T> {
             nNode.setNext(null);
             this.tail = nNode;
         } else {
-            DoubleNode<T> current = this.head;
+            DoubleNode<T> currentNode = this.head;
             for (int i = 0; i < index; i++) {
-                current = current.getNext();
+                currentNode = currentNode.getNext();
             }
-            nNode.setNext(current);
-            nNode.setPrev(current.getPrev());
-            current.getPrev().setNext(nNode);
-            current.setPrev(nNode);
+            nNode.setNext(currentNode);
+            nNode.setPrev(currentNode.getPrev());
+            currentNode.getPrev().setNext(nNode);
+            currentNode.setPrev(nNode);
         }
         this.size++;
     }
@@ -63,14 +63,14 @@ public class  DoublyLinkedList<T> {
         return this.indexOf(e) != -1;
     }
     public T get(int index) {
-        checkIndexClose(index, this.size);
+        indexClosedCheck(index, this.size);
         if(index == 0) return this.head.getKey();
-        if(index == this.size - 1) this.tail.getKey();
-        int backIndex = this.size - 1 - index;
+        if(index == this.size - 1) return this.tail.getKey();
+        int backwardsIndex = this.size - 1 - index;
         DoubleNode<T> node;
-        if(backIndex < index) {
+        if(backwardsIndex < index) {
             node = this.tail;
-            for (int i = 0; i < backIndex; i++) {
+            for (int i = 0; i < backwardsIndex; i++) {
                 node = node.getPrev();
             }
         } else {
@@ -96,7 +96,7 @@ public class  DoublyLinkedList<T> {
     }
 
     public T remove(int index) {
-        checkIndexClose(index, this.size);
+        indexClosedCheck(index, this.size);
         DoubleNode<T> temp;
         if(index == 0) {
             temp = this.head;
@@ -112,10 +112,10 @@ public class  DoublyLinkedList<T> {
             for (int i = 0; i < index; i++) {
                 temp = temp.getNext();
             }
-            DoubleNode aft = temp.getNext();
+            DoubleNode next = temp.getNext();
             DoubleNode prev = temp.getPrev();
-            prev.setNext(aft);
-            aft.setPrev(prev);
+            prev.setNext(next);
+            next.setPrev(prev);
         }
         return temp.getKey();
     }
@@ -147,9 +147,5 @@ public class  DoublyLinkedList<T> {
         };
     }
 
-
-    public static void main(String[] args) {
-
-    }
 }
 
